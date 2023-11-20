@@ -1,0 +1,33 @@
+[tool.poetry]
+name = "djboiler"
+version = "0.1"
+description = ""
+authors = []
+
+[tool.poetry.dependencies]
+python = ">=3.10,<4"
+django = ">=3.0"
+djangoql = "*"
+django-extensions = "*"
+django-redis = "*"
+psycopg2-binary = "*"
+pytest = "*"
+pytest-cov = "*"
+python-decouple = "*"
+sentry-sdk = "*"
+shortuuid = "*"
+unittest-xml-reporting = "*"
+uwsgi = "*"
+werkzeug = "*"
+whitenoise = "*"
+
+[tool.poetry.dev-dependencies]
+bpython = "*"
+django-stubs = "*"
+
+[build-system]
+requires = ["poetry>=1.0"]
+build-backend = "poetry.masonry.api"
+
+[tool.ruff]
+ignore = ["F403", "E501", "N802", "N803", "N806", "C901", "D100", "D102", "D102", "D10"]

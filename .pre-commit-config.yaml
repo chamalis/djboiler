@@ -1,0 +1,52 @@
+repos:
+- repo: https://github.com/pre-commit/pre-commit-hooks
+  rev: v4.5.0
+  hooks:
+  - id: check-yaml
+  - id: end-of-file-fixer
+  - id: trailing-whitespace
+  - id: check-byte-order-marker
+
+- repo: https://github.com/ambv/black
+  rev: 23.11.0
+  hooks:
+  - id: black
+
+- repo: https://github.com/asottile/reorder_python_imports
+  rev: v3.12.0
+  hooks:
+  -   id: reorder-python-imports
+
+- repo: https://github.com/charliermarsh/ruff-pre-commit
+  rev: v0.1.6
+  hooks:
+    - id: ruff
+#      args: [ --fix ]
+#    # Run the formatter.
+#    - id: ruff-format
+
+- repo: https://github.com/pre-commit/mirrors-mypy
+  rev: 1.7.0
+  hooks:
+  - id: mypy
+    name: Run type checks
+    args: ["--non-interactive"]
+
+- repo: https://github.com/pycqa/pydocstyle
+  rev: 6.3.0
+  hooks:
+  - id: pydocstyle
+
+- repo: https://github.com/ecugol/pre-commit-hooks-django
+  rev: v0.4.0
+  hooks:
+  -   id: check-untracked-migrations
+      # Specify branches, or remove to run on all branches
+      args: ["--branches", "main"]
+  -   id: check-unapplied-migrations
+  -   id: check-absent-migrations
+  -   id: po-location-format
+      # Mandatory, select one of the following options:
+      # file: show only the file path as location
+      # never: remove all locations
+      args: ["--add-location", "file"]
