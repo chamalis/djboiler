@@ -26,9 +26,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent.parent.parent
 # TODO fill in .env - SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = config(
     'SECRET_KEY',
-    default='EONH(@*&%#$Y*@YHT@PO!:@#!H#RT!30928525j25')
+    default="django-insecure-6e*^7y^cxc+k#+y^!4bzc*1&d$&_i_i=)c_x%@^mlk4-^e9jir")
 
-# TODO: Change your domain names here.
+# TODO: Change your domain names here or in env file
 DOMAIN = config('DOMAIN', default="localhost")
 ALLOWED_HOSTS = config('ALLOWED_HOSTS', cast=Csv(), default=f"{DOMAIN, '127.0.0.1'}")
 
@@ -161,6 +161,7 @@ elif DBURL:
     SESSION_COOKIE_AGE = 365 * 24 * 60 * 60
     SESSION_COOKIE_SECURE = True
 else:
+    # SQLite sufficient for most projects
     DATABASES = {
         "default": {
             "ENGINE": "django.db.backends.sqlite3",

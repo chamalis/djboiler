@@ -1,11 +1,20 @@
 #!/usr/bin/env python
 """Django's command-line utility for administrative tasks."""
 import os
+import site
 import sys
+import pathlib
 
 
 def main():
+    # add source root of django apps into sys.path if not already
+    src_root = str(pathlib.Path(__file__).parent.joinpath("djboiler"))
+    site.addsitedir(src_root)
+
+    # default settings file. This is overriden by bin/run-prod.sh for production
     os.environ.setdefault("DJANGO_SETTINGS_MODULE", "djboiler.main.settings.dev")
+
+    # start the django app
     try:
         from django.core.management import execute_from_command_line
     except ImportError as exc:

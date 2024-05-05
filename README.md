@@ -1,6 +1,6 @@
 # Django project template
 
-This is a simple Django 4.0+ project template with my preferred setup. The idea
+This is a simple Django 5.0+ project template with my preferred setup. The idea
 is to have several branches per feature that may be needed for some projects but
 not for others.
 
@@ -16,12 +16,12 @@ todo
 
 Replace every occurence of `djboiler` with the project's name
 
-The following need to be adjusted:
+At least the following need to be adjusted:
 
-* Run `poetry lock` to pin the packages to the latest versions.
-* Change this README.
-* Add the domain in `settings.py`'s `ALLOWED_HOSTS`.
 * Create and customize an `.env` file, with django secret etc
+* Run `poetry lock` to pin the packages to the latest versions.
+* Build your apps under `djboiler`, replace `app_x` etc.
+* Change this README.
 
 ### Docker deployment ###
 
@@ -35,8 +35,15 @@ Default Location: [http://localhost/](http://localhost/).
 
 ```bash
 $ poetry install
-$ ./manage.py makemigrations && ./manage.py migrate
+$ ./manage.py makemigrations
+$ ./manage.py migrate
+$ ./manage.py collectstatic
 $ ./manage.py runserver
+```
+
+You can specify the settings module to be used, in runtime, for example:
+```bash
+$ ./manage.py runserver --settings djboiler.main.settings.local
 ```
 
 Default location: [http://localhost:8000/](http://localhost:8000/)

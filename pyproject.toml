@@ -6,7 +6,7 @@ authors = []
 
 [tool.poetry.dependencies]
 python = ">=3.10,<4"
-django = ">=3.0"
+django = ">=5.0.0"
 djangoql = "*"
 django-extensions = "*"
 django-redis = "*"
@@ -23,11 +23,14 @@ whitenoise = "*"
 
 [tool.poetry.dev-dependencies]
 bpython = "*"
-django-stubs = "*"
+django-stubs = ">=5.0.0"
+mypy = ">=1.10.0"
+flake8 = ">=7.0.0"
+django-debug-toolbar = "^4.3.0"
 
 [build-system]
 requires = ["poetry>=1.0"]
-build-backend = "poetry.masonry.api"
+build-backend = "poetry.core.masonry.api"
 
 [tool.ruff]
 ignore = ["F403", "E501", "N802", "N803", "N806", "C901", "D100", "D102", "D102", "D10"]

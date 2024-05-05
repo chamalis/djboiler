@@ -1,10 +1,9 @@
-# Created by https://www.gitignore.io/api/python,django
-
 *.log
 *.pot
 *.pyc
 __pycache__/
 local_settings.py
+local.py
 db.sqlite3
 media
 .idea
@@ -13,7 +12,9 @@ deprecated*
 DEPRECATED*
 Deprecated*
 mynotes.txt
-poetry.lock
+# poetry.lock
+
+# Created by https://www.gitignore.io/api/python,django
 
 # django
 misc/dbdata/

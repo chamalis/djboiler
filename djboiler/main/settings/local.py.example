@@ -1,0 +1,6 @@
+"""
+local.py is excluded from git. Use this to apply local dev settings
+that are not meant to be pushed to the git repo
+"""
+
+from .dev import *
