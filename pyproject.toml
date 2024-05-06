@@ -13,7 +13,7 @@ django-redis = "*"
 psycopg2-binary = "*"
 pytest = "*"
 pytest-cov = "*"
-python-decouple = "*"
+python-decouple = ">=3.8"
 sentry-sdk = "*"
 shortuuid = "*"
 unittest-xml-reporting = "*"
@@ -24,13 +24,43 @@ whitenoise = "*"
 [tool.poetry.dev-dependencies]
 bpython = "*"
 django-stubs = ">=5.0.0"
-mypy = ">=1.10.0"
-flake8 = ">=7.0.0"
 django-debug-toolbar = "^4.3.0"
+mypy = ">=1.10.0"
+ruff = "^0.4.3"
+isort = "^5.13.2"
+
 
 [build-system]
 requires = ["poetry>=1.0"]
 build-backend = "poetry.core.masonry.api"
 
+
 [tool.ruff]
 ignore = ["F403", "E501", "N802", "N803", "N806", "C901", "D100", "D102", "D102", "D10"]
+
+[tool.pytest.ini_options]
+django_settings_module = "djboiler.main.settings.prod"
+norecursedirs = [".venv", ".env"]
+addopts = ["--cov=."]
+
+[tool.coverage.run]
+branch = true
+omit = [".venv/*", ".env/*"]
+
+[tool.mypy]
+python_version = "3.10"
+check_untyped_defs = true
+disallow_any_generics = true
+disallow_untyped_calls = true
+disallow_untyped_decorators = true
+ignore_errors = false
+ignore_missing_imports = true
+implicit_reexport = false
+strict_optional = true
+strict_equality = true
+no_implicit_optional = true
+warn_unused_ignores = true
+warn_redundant_casts = true
+warn_unused_configs = true
+warn_unreachable = true
+warn_no_return = true
