@@ -8,6 +8,8 @@ db.sqlite3
 media
 .idea
 .vscode
+.editorconfig
+.dockerignore
 deprecated*
 DEPRECATED*
 Deprecated*

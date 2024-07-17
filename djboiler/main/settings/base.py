@@ -30,7 +30,7 @@ SECRET_KEY = config(
 
 # TODO: Change your domain names here or in env file
 DOMAIN = config('DOMAIN', default="localhost")
-ALLOWED_HOSTS = config('ALLOWED_HOSTS', cast=Csv(), default=f"{DOMAIN, '127.0.0.1'}")
+ALLOWED_HOSTS = config('ALLOWED_HOSTS', cast=Csv(), default=f"{DOMAIN}, '127.0.0.1'")
 
 ENVIRONMENT = config("ENV", default="local")
 # SECURITY WARNING: don't run with debug turned on in production!
@@ -100,74 +100,41 @@ WSGI_APPLICATION = "djboiler.main.wsgi.application"
 
 AUTH_USER_MODEL = "users.User"
 
-# Adjust this to taste.
-SESSION_ENGINE = "django.contrib.sessions.backends.cached_db"
-
 DBURL = config("DATABASE_URL", default="")
-if os.getenv("IN_DOCKER"):
-    DATABASES = {
-        "default": {
-            "ENGINE": "django.db.backends.postgresql_psycopg2",
-            "NAME": "postgres",
-            "USER": "postgres",
-            "PASSWORD": "password",
-            "HOST": "db",
-            "PORT": 5432,
-            # Keep connections in the pool for an hour.
-            "CONN_MAX_AGE": 60 * 60,
-        }
-    }
 
-    CACHES = {
-        "default": {
-            "BACKEND": "django_redis.cache.RedisCache",
-            "LOCATION": "redis://redis/1",
-            "OPTIONS": {"CLIENT_CLASS": "django_redis.client.DefaultClient"},
-        }
-    }
+# Custom deployment.
+USER, PASSWORD, HOST, PORT, NAME = re.match(  # type: ignore
+    r"^postgres://(?P<username>.*?)\:(?P<password>.*?)\@(?P<host>.*?)\:(?P<port>\d+)\/(?P<db>.*?)$",
+    DBURL,
+).groups()
 
-    SESSION_CACHE_ALIAS = "default"
-    SESSION_COOKIE_AGE = 365 * 24 * 60 * 60
-elif DBURL:
-    # Running under Dokku.
-    USER, PASSWORD, HOST, PORT, NAME = re.match(  # type: ignore
-        r"^postgres://(?P<username>.*?)\:(?P<password>.*?)\@(?P<host>.*?)\:(?P<port>\d+)\/(?P<db>.*?)$",
-        DBURL,
-    ).groups()
-
-    DATABASES = {
-        "default": {
-            "ENGINE": "django.db.backends.postgresql_psycopg2",
-            "NAME": NAME,
-            "USER": USER,
-            "PASSWORD": PASSWORD,
-            "HOST": HOST,
-            "PORT": int(PORT),
-            # Keep connections in the pool for an hour.
-            "CONN_MAX_AGE": 60 * 60,
-        }
+DATABASES = {
+    "default": {
+        "ENGINE": "django.db.backends.postgresql_psycopg2",
+        "NAME": NAME,
+        "USER": USER,
+        "PASSWORD": PASSWORD,
+        "HOST": HOST,
+        "PORT": int(PORT),
+        # Keep connections in the pool for an hour.
+        "CONN_MAX_AGE": 60 * 60,
     }
+}
 
-    CACHES = {
-        "default": {
-            "BACKEND": "django_redis.cache.RedisCache",
-            "LOCATION": os.getenv("REDIS_URL", ""),
-            "OPTIONS": {"CLIENT_CLASS": "django_redis.client.DefaultClient"},
-        }
+CACHES = {
+    "default": {
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": os.getenv("REDIS_URL", ""),
+        "OPTIONS": {
+            "CLIENT_CLASS": "django_redis.client.DefaultClient"
+        },
     }
+}
 
-    SESSION_CACHE_ALIAS = "default"
-    SESSION_ENGINE = "django.contrib.sessions.backends.cache"
-    SESSION_COOKIE_AGE = 365 * 24 * 60 * 60
-    SESSION_COOKIE_SECURE = True
-else:
-    # SQLite sufficient for most projects
-    DATABASES = {
-        "default": {
-            "ENGINE": "django.db.backends.sqlite3",
-            "NAME": BASE_DIR / "db.sqlite3",
-        }
-    }
+SESSION_CACHE_ALIAS = "default"
+SESSION_ENGINE = "django.contrib.sessions.backends.cached_db"
+SESSION_COOKIE_AGE = 365 * 24 * 60 * 60
+SESSION_COOKIE_SECURE = True
 
 
 if config("EMAIL_URL", ""):

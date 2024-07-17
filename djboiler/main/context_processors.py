@@ -1,5 +1,5 @@
-from django.conf import settings as sett
+from django.conf import settings as dj_settings
 
 
 def settings(request):
-    return {"settings": sett}
+    return {"settings": dj_settings}

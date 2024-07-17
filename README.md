@@ -1,6 +1,6 @@
 # Django project template
 
-This is a simple Django 5.0+ project template with my preferred setup. The idea
+This is a simple Django 4.0+ project template with my preferred setup. The idea
 is to have several branches per feature that may be needed for some projects but
 not for others.
 
@@ -18,7 +18,8 @@ Replace every occurence of `djboiler` with the project's name
 
 At least the following need to be adjusted:
 
-* Create and customize an `.env` file, with django secret etc
+* Create and customize an `.env` file, with django secret etc following either `env.docker` or `env.template`
+  * If you use `env.docker` then: `docker-compose --env-file env.docker up -d` 
 * Run `poetry lock` to pin the packages to the latest versions.
 * Build your apps under `djboiler`, replace `app_x` etc.
 * Change this README.
