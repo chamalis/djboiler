@@ -11,7 +11,7 @@ def main():
     src_root = str(pathlib.Path(__file__).parent.joinpath("djboiler"))
     site.addsitedir(src_root)
 
-    # default settings file. This is overriden by bin/run-prod.sh for production
+    # default settings file. This is overriden by bin/run.sh for production
     os.environ.setdefault("DJANGO_SETTINGS_MODULE", "djboiler.main.settings.dev")
 
     # start the django app

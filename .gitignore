@@ -1,6 +1,7 @@
 *.log
 *.pot
 *.pyc
+*.bak
 __pycache__/
 local_settings.py
 local.py

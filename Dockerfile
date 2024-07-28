@@ -37,4 +37,4 @@ RUN chown user:user -R /app
 USER user
 
 # Launch the bash script starting the app
-CMD ["./bin/run-prod.sh"]
+CMD ["./bin/docker/run.sh"]
