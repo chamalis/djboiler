@@ -100,25 +100,26 @@ WSGI_APPLICATION = "djboiler.main.wsgi.application"
 
 AUTH_USER_MODEL = "users.User"
 
-DBURL = config("DATABASE_URL", default="")
-
-# Custom deployment.
-USER, PASSWORD, HOST, PORT, NAME = re.match(  # type: ignore
-    r"^postgres://(?P<username>.*?)\:(?P<password>.*?)\@(?P<host>.*?)\:(?P<port>\d+)\/(?P<db>.*?)$",
-    DBURL,
-).groups()
+# DBURL = config("DATABASE_URL", default="")
+#
+# # Custom deployment.
+# USER, PASSWORD, HOST, PORT, NAME = re.match(  # type: ignore
+#     r"^postgres://(?P<username>.*?)\:(?P<password>.*?)\@(?P<host>.*?)\:(?P<port>\d+)\/(?P<db>.*?)$",
+#     DBURL,
+# ).groups()
 
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql_psycopg2",
-        "NAME": NAME,
-        "USER": USER,
-        "PASSWORD": PASSWORD,
-        "HOST": HOST,
-        "PORT": int(PORT),
+        "NAME": config("POSTGRES_DB", default="djboiler"),
+        "USER": config("POSTGRES_USER", default="postgres"),
+        "PASSWORD": config("POSTGRES_PASSWORD"),
+        "HOST": config("POSTGRES_HOST", default="localhost"),
+        "PORT": config("POSTGRES_PORT", cast=int, default=5432),
         # Keep connections in the pool for an hour.
         "CONN_MAX_AGE": 60 * 60,
     }
+    # specify additional (to default) databases here
 }
 
 CACHES = {

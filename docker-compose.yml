@@ -37,6 +37,8 @@ services:
     container_name: djapp
     user: "${UID:-1000}:${UID:-1000}"
     build: .
+    env_file:
+      - .env
     stop_signal: SIGINT
     stdin_open: true
     tty: true
