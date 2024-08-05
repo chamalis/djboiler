@@ -75,6 +75,6 @@ volumes:
 
 networks:
   single-tier:
-    enable_ipv6: true
+    enable_ipv6: false
   default:
-    enable_ipv6: true
+    enable_ipv6: false
