@@ -29,8 +29,8 @@ function create_user_and_database() {
 	fi
 }
 
-if [ -n "$DBs" ]; then
-  for db in $(echo "$DBs" | tr ',' ' '); do
+if [ -n "$EXTRA_DBs" ]; then
+  for db in $(echo "$EXTRA_DBs" | tr ',' ' '); do
 		create_user_and_database "$db" "$POSTGRES_USER"
 	done
 fi
