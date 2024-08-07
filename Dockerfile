@@ -9,7 +9,7 @@ RUN apt-get update && apt-get install -y \
     build-essential \
     netcat-traditional \
     libssl-dev libpcre3 libpcre3-dev \
-    # procps net-tools redis-tools postgresql-client \
+    procps net-tools redis-tools postgresql-client iputils-ping\
     && rm -rf /var/lib/apt/lists/*
 
 # The apt package for poetry is too old, use pip
