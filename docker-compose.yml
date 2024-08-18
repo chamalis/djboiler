@@ -46,7 +46,7 @@ services:
     stdin_open: true
     tty: true
     volumes:
-      - .:/code:cached
+      - .:/app:cached
     ports:
       - "8000:8000"
 #    expose:

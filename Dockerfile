@@ -18,16 +18,14 @@ RUN pip install -U --no-cache-dir --pre pip poetry
 # Copy only the dep files first to leverage layers
 COPY poetry.lock pyproject.toml /app/
 
-# Configure Poetry to not create virtual environments
-RUN poetry config virtualenvs.create false
-
 # Use system wide install
 RUN poetry config virtualenvs.create false
 
 # Install the python packages
 RUN poetry install --no-interaction --no-root --only main
 
-# Add the application files to the image
+# Add the application files to the image, useful for production only
+# since development passes through bind volume
 COPY . /app/
 COPY .env.docker /app/.env
 
