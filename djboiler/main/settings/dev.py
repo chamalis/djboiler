@@ -1,7 +1,10 @@
+# todo
+from decouple import AutoConfig
+
+ENVIRONMENT = "DEV"
+
 from .base import *
 
-# todo
-
-ENVIRONMENT = config("ENV", default="dev")
-
 DEBUG = config('DEBUG', cast=bool, default=True)
+ALLOWED_HOSTS.append("app-dev")
+print(ALLOWED_HOSTS)

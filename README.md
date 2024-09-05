@@ -14,20 +14,37 @@ todo
 
 ## Setup
 
+### customize ###
+
+* need to replace recursively `djboiler` with the project's name
+todo
+
+
+### Build the images ### 
+
 Replace every occurence of `djboiler` with the project's name
 
 At least the following need to be adjusted:
 
-* Create and customize an `.env` file, with django secret etc following either `env.docker` or `env.template`
-  * If you use `env.docker` then: `docker-compose --env-file env.docker up -d` 
-* Run `poetry lock` to pin the packages to the latest versions.
-* Build your apps under `djboiler`, replace `app_x` etc.
-* Change this README.
+You can Use the sh scripts under /bin.
+
+- `./bin/setup-dev.sh`
+- `./bin/setup-prod.sh`
 
 ### Docker deployment ###
 
+Currently there is no remote deploy script for production.
+This should be implemented, since now both environments will
+be deployed locally
+
+Use the sh scripts under /bin.
+
+- `./bin/deploy-dev.sh --build`
+- `./bin/deploy-prod.sh --build`
+
+__NOTE__: To deploy both dev,prod environments:
 ```bash
-$ docker-compose up --build
+COMPOSE_PROFILES=dev,prod docker compose up
 ```
 
 Default Location: [http://localhost/](http://localhost/).
@@ -35,14 +52,14 @@ Default Location: [http://localhost/](http://localhost/).
 ### Non docker deployment ###
 
 ```bash
-$ poetry install
-$ ./manage.py makemigrations
-$ ./manage.py migrate
-$ ./manage.py collectstatic
-$ ./manage.py runserver
+$ poetry lock --install
+$ fill in an .env
+$ ./bin/deploy-dev-native.sh
 ```
 
-You can specify the settings module to be used, in runtime, for example:
+todo
+
+__NOTE__: You can specify the settings module to be used, in runtime, for example:
 ```bash
 $ ./manage.py runserver --settings djboiler.main.settings.local
 ```

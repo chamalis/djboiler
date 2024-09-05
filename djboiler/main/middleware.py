@@ -1,6 +1,7 @@
 import time
 
 from django.utils.deprecation import MiddlewareMixin
+from django.conf import settings
 
 
 class StatsMiddleware(MiddlewareMixin):
@@ -16,4 +17,16 @@ class StatsMiddleware(MiddlewareMixin):
 
         # Add the header.
         response["X-Page-Generation-Duration-ms"] = int(duration * 1000)
+        return response
+
+
+class EnvironmentHeaderMiddleware:
+    def __init__(self, get_response):
+        self.get_response = get_response
+
+    def __call__(self, request):
+        response = self.get_response(request)
+        if getattr(settings, "ENVIRONMENT", "").upper() == "DEV":
+            response['X-Environment'] = 'dev'
+
         return response

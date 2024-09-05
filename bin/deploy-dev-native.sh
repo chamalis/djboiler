@@ -2,7 +2,7 @@
 
 set -e
 
-SETTINGS_MODULE="djboiler.main.settings.dev"
+SETTINGS_MODULE="djboiler.main.settings.local"
 
 # generate and apply schema changes
 ./manage.py makemigrations --noinput --settings "$SETTINGS_MODULE"
@@ -12,5 +12,5 @@ SETTINGS_MODULE="djboiler.main.settings.dev"
 
 # ReStart the development server every time it exits
 while :; do
-    ./manage.py runserver_plus 0.0.0.0:8000 --settings "$SETTINGS_MODULE"
+    python -m pydevd_pycharm manage.py runserver_plus 0.0.0.0:8000 --settings "$SETTINGS_MODULE"
 done

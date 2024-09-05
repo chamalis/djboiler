@@ -29,7 +29,9 @@ function create_user_and_database() {
 	fi
 }
 
-if [ -n "$EXTRA_DBs" ]; then
+# if more databases are needed
+# +x ensures that it will not fail if undefined due to set -u
+  if [ -n "${EXTRA_DBs+x}" ]; then
   for db in $(echo "$EXTRA_DBs" | tr ',' ' '); do
 		create_user_and_database "$db" "$POSTGRES_USER"
 	done

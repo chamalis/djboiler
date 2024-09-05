@@ -32,7 +32,6 @@ SECRET_KEY = config(
 DOMAIN = config('DOMAIN', default="localhost")
 ALLOWED_HOSTS = config('ALLOWED_HOSTS', cast=Csv(), default=f"{DOMAIN}, '127.0.0.1'")
 
-ENVIRONMENT = config("ENV", default="local")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config('DEBUG', cast=bool, default=True)
 
@@ -64,6 +63,7 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "djboiler.main.middleware.StatsMiddleware",
+    "djboiler.main.middleware.EnvironmentHeaderMiddleware",
     "whitenoise.middleware.WhiteNoiseMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
@@ -176,7 +176,6 @@ SITE_ID = 1
 sentry_sdk.init(
     dsn=os.getenv("SENTRY_DSN"),
     traces_sample_rate=0.2,
-    environment=ENVIRONMENT,
     integrations=[DjangoIntegration()],
 )
 

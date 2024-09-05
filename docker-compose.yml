@@ -1,79 +1,148 @@
+x-redis: &redis
+  image: redis
+  networks:
+    - single-tier
+
+x-db: &db
+  environment:
+    - PGDATA=/var/lib/postgresql/data/dbdata
+  networks:
+    - single-tier
+  healthcheck:
+    test: ["CMD-SHELL", "pg_isready -h ${POSTGRES_HOST} -p ${POSTGRES_PORT} -U postgres"]
+    timeout: 10s
+    interval: 5s
+
+x-app: &app
+  user: "${UID:-1000}:${UID:-1000}"
+  networks:
+    - single-tier
+  environment:
+    IN_DOCKER: "true"
+
+
 services:
-  redis:
+  # ***** REDIS ***** #
+  redis-dev:
+    <<: *redis
+    profiles: ["dev"]
     container_name: redis
-    image: redis
-#    expose:
-#      - "6379"
     ports:
       - "6379:6379"
-    networks:
-      - single-tier
+    env_file:
+      - ./envs/dev/.env
 
-  db:
-    container_name: djdb
+  redis-prod:
+    <<: *redis
+    profiles: ["prod"]
+    container_name: redis-pro
+    expose:
+      - "6379"
+    env_file:
+      - ./envs/prod/.env
+
+  # ***** Postgres ***** #
+  db-dev:
+    <<: *db
     build:
       context: ./ext/db
       args:
         UID: "${UID:-1000}"
         GID: "${GID:-1000}"
-    env_file:
-      - .env
-    # user: "${UID:-1000}:${UID:-1000}"
-    restart: unless-stopped
+    profiles: ["dev"]
+    container_name: djdb
+#    healthcheck:
+#      test: [ "CMD-SHELL", "pg_isready -U postgres" ]
+#      interval: 5s
+#      timeout: 4s
+#      retries: 3
     stop_signal: SIGINT
     volumes:
       - ./ext/db/data:/var/lib/postgresql/data:delegated
-    environment:
-      - PGDATA=/var/lib/postgresql/data/dbdata
     ports:
       - "5432:5432"
-#    expose:
-#      - "5432"
-    networks:
-      - single-tier
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -h db -p 5432 -U postgres"]
-      timeout: 15s
-      interval: 5s
-
-  app:
-    container_name: djapp
-    user: "${UID:-1000}:${UID:-1000}"
-    build: .
     env_file:
-      - .env
+      - ./envs/dev/.env
+
+  db-prod:
+    <<: *db
+    build:
+      context: ./ext/db
+      args:
+        UID: "${UID:-1000}"
+        GID: "${GID:-1000}"
+    profiles: [ "prod" ]
+    container_name: djdb-pro
+    restart: unless-stopped
+    volumes:
+      - dbdata:/var/lib/postgresql/data
+    expose:
+      - "5432"
+    env_file:
+      - ./envs/prod/.env
+
+  # ***** Web App ***** #
+  app-dev:
+    <<: *app
+    build:
+      context: .
+      target: development
+    profiles: ["dev"]
+    container_name: djapp
     stop_signal: SIGINT
     stdin_open: true
     tty: true
-    volumes:
-      - .:/app:cached
     ports:
-      - "8000:8000"
-#    expose:
-#      - "8000"
+      - "8800:8800"
+    volumes:
+      - .:/app
+      - ./envs/dev/.env:/app/.env
+    env_file:
+      - ./envs/dev/.env
+    environment:
+      - DJANGO_SETTINGS_MODULE=djboiler.main.settings.dev
+    depends_on:
+      db-dev:
+        condition: service_healthy
+      redis-dev:
+        condition: service_started
+
+  app-prod:
+    <<: *app
+    build:
+      context: .
+      target: production
+    profiles: ["prod"]
+    container_name: djapp-pro
+    restart: unless-stopped
+    expose:
+      - "8000"
+    env_file:
+      - ./envs/prod/.env
+    environment:
+      - DJANGO_SETTINGS_MODULE=djboiler.main.settings.prod
+    depends_on:
+      db-prod:
+        condition: service_healthy
+      redis-prod:
+        condition: service_started
+
+  # ***** NGINX ***** #
+  websrv:
+    build: ./ext/nginx
+    profiles: ["prod", "dev"]
+    container_name: djx
+    restart: unless-stopped
     networks:
       - single-tier
-    depends_on:
-      db:
-        condition: service_healthy
-      redis:
-        condition: service_started
-    environment:
-      IN_DOCKER: 1
-
-  websrv:
-    container_name: djx
-    build: ./ext/nginx
-    restart: unless-stopped
-    depends_on:
-      - app
     ports:
         - "80:80"
-    networks:
-      - single-tier
+    env_file:
+      - ./envs/prod/.env
+
 
 volumes:
-  data:
+  dbdata:
     driver: local
 
 networks:
