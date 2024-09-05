@@ -49,6 +49,13 @@ COMPOSE_PROFILES=dev,prod docker compose up
 
 Default Location: [http://localhost/](http://localhost/).
 
+Check that development env works:
+```bash
+curl -H "X-Env: DEV" http://localhost
+```
+
+Production: todo
+
 ### Non docker deployment ###
 
 ```bash
@@ -66,7 +73,8 @@ $ ./manage.py runserver --settings djboiler.main.settings.local
 
 Default location: [http://localhost:8000/](http://localhost:8000/)
 
-## Credits
+### Credits
 
 Bits and peaces "collected" by the following projects:
+- https://github.com/reef-technologies/cookiecutter-rt-django
 - https://github.com/skorokithakis/django-project-template
