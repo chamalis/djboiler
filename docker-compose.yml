@@ -139,7 +139,8 @@ services:
         - "80:80"
     env_file:
       - ./envs/prod/.env
-
+    volumes:
+      - ./_static:/usr/share/nginx/html/djboiler:ro
 
 volumes:
   dbdata:
