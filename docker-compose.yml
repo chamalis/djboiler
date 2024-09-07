@@ -35,7 +35,7 @@ services:
   redis-prod:
     <<: *redis
     profiles: ["prod"]
-    container_name: redis-pro
+    container_name: redis-prod
     expose:
       - "6379"
     env_file:
@@ -72,7 +72,7 @@ services:
         UID: "${UID:-1000}"
         GID: "${GID:-1000}"
     profiles: [ "prod" ]
-    container_name: djdb-pro
+    container_name: djdb-prod
     restart: unless-stopped
     volumes:
       - dbdata:/var/lib/postgresql/data
@@ -113,7 +113,7 @@ services:
       context: .
       target: production
     profiles: ["prod"]
-    container_name: djapp-pro
+    container_name: djapp-prod
     restart: unless-stopped
     expose:
       - "8000"
