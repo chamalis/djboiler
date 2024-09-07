@@ -54,7 +54,11 @@ Check that development env works:
 curl -H "X-Env: DEV" http://localhost
 ```
 
-Production: todo
+Check that prod env works:
+```bash
+curl http://localhost
+```
+
 
 ### Non docker deployment ###
 

@@ -24,6 +24,6 @@ done
 # Start uWSGI server in production mode
 # shellcheck disable=SC2093
 exec /usr/local/bin/uwsgi --uid user --gid user --socket :8000 \
-                          --chmod-socket=664 \
+                          --chmod-socket=664 -b 32768 \
                           --master --processes 4 --threads 2 \
                           --module "$WSGI_MODULE"
