@@ -18,9 +18,6 @@ done
 ./manage.py makemigrations --noinput --settings "$SETTINGS_MODULE"
 ./manage.py migrate --noinput --settings "$SETTINGS_MODULE"
 
-# Collect static files non-interactively
-# ./manage.py collectstatic --noinput -settings "$SETTINGS_MODULE" -c
-
 # Start uWSGI server in production mode
 # shellcheck disable=SC2093
 exec /usr/local/bin/uwsgi --uid user --gid user --socket :8000 \

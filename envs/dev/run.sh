@@ -18,9 +18,6 @@ done
 ./manage.py makemigrations --settings "$SETTINGS_MODULE"  # Allow input for interactive use in dev
 ./manage.py migrate --settings "$SETTINGS_MODULE"
 
-# Collect static files
-# ./manage.py collectstatic --noinput --settings "$SETTINGS_MODULE" -c
-
 # run uwsgi with development options like autoreload in case of code change
 /usr/local/bin/uwsgi --uid user --gid user --http :8800 \
                      --py-call-uwsgi-fork-hooks --py-autoreload 1 \

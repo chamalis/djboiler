@@ -28,7 +28,6 @@ SECRET_KEY = config(
     'SECRET_KEY',
     default="django-insecure-6e*^7y^cxc+k#+y^!4bzc*1&d$&_i_i=)c_x%@^mlk4-^e9jir")
 
-# TODO: Change your domain names here or in env file
 DOMAIN = config('DOMAIN', default="localhost")
 ALLOWED_HOSTS = config('ALLOWED_HOSTS', cast=Csv(), default=f"{DOMAIN}, '127.0.0.1'")
 
@@ -47,11 +46,9 @@ INSTALLED_APPS = [
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
-    "django.contrib.sites",
     "django.contrib.sessions",
     "django.contrib.messages",
-    "whitenoise.runserver_nostatic",
-    "django.contrib.staticfiles",
+
     "django_extensions",
 
     "djangoql",
@@ -64,7 +61,6 @@ MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "djboiler.main.middleware.StatsMiddleware",
     "djboiler.main.middleware.EnvironmentHeaderMiddleware",
-    "whitenoise.middleware.WhiteNoiseMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.contrib.sites.middleware.CurrentSiteMiddleware",
@@ -74,25 +70,6 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = "djboiler.main.urls"
-
-TEMPLATES = [
-    {
-        "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [BASE_DIR / "templates"],
-        "APP_DIRS": True,
-        "OPTIONS": {
-            "context_processors": [
-                "django.template.context_processors.debug",
-                "django.template.context_processors.request",
-                "django.contrib.auth.context_processors.auth",
-                "django.contrib.messages.context_processors.messages",
-                "djboiler.main.context_processors.settings",
-            ]
-        },
-    }
-]
-
-TEMPLATE_STRING_IF_INVALID = "VARIABLE UNDEFINED: %s"
 
 DEFAULT_AUTO_FIELD = "django.db.models.AutoField"
 
@@ -149,7 +126,7 @@ else:
 
 
 # Password validation
-# https://docs.djangoproject.com/en/2.0/ref/settings/#auth-password-validators
+# https://docs.djangoproject.com/en/4.0/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [
     {"NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator"},
@@ -159,7 +136,7 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 # Internationalization
-# https://docs.djangoproject.com/en/3.0/topics/i18n/
+# https://docs.djangoproject.com/en/4.0/topics/i18n/
 
 LANGUAGE_CODE = "en-us"
 
@@ -217,11 +194,3 @@ LOGGING = {
         },
     },
 }
-
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/2.0/howto/static-files/
-
-STATIC_ROOT = config('STATIC_ROOT', default=Path(BASE_DIR).joinpath('_static'))
-STATIC_URL = config('STATIC_URL', default='/static/')
-STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
-STATICFILES_DIRS = [BASE_DIR / "static"]

@@ -59,9 +59,6 @@ WORKDIR /app
 COPY --from=base /app /app
 COPY ./envs/prod/.env /app/.env
 
-RUN poetry run python manage.py collectstatic --no-input -c \
-    --settings djboiler.main.settings.prod
-
 # todo fix this after splitting the dockerfiles
 USER 0:0
 RUN rm -rf /var/lib/apt/lists/*
